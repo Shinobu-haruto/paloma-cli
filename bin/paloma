@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+import sys
+import time
+import random
+import os
+
+
+P_CAMINAR_1 = [
+    "  (o)> ",
+    " / )   ",
+    "  ^^   "
+]
+
+P_CAMINAR_2 = [
+    "  (o)> ",
+    " / )   ",
+    "  >/   "
+]
+
+P_PICOTEAR_ALTO = [
+    "  (o)> ",
+    " / )   ",
+    "  ^^   "
+]
+
+P_PICOTEAR_ABAJO = [
+    "       ",
+    " / )>  ",
+    "  ^^ . "  
+]
+
+def ocultar_cursor():
+    sys.stdout.write("\033[?25l")
+    sys.stdout.flush()
+
+def mostrar_cursor():
+    sys.stdout.write("\033[?25h")
+    sys.stdout.flush()
+
+def limpiar_pantalla():
+    sys.stdout.write("\033[H\033[J")
+
+def renderizar(pos, frame):
+    
+    sys.stdout.write("\033[H")  
+    espacios = " " * pos
+    for linea in frame:
+        sys.stdout.write(f"\033[K{espacios}{linea}\n")  # \033[K limpia la línea actual
+    
+    
+    suelo = "─" * pos + "  .   .  " + "─" * 20
+    sys.stdout.write(f"\033[K{suelo}\n")
+    sys.stdout.flush()
+
+def animar():
+    ocultar_cursor()
+    limpiar_pantalla()
+    
+    try:
+        columnas = os.get_terminal_size().columns
+    except OSError:
+        columnas = 80
+
+    pos = 0
+    max_pos = columnas - 12
+
+    try:
+        while pos < max_pos:
+            
+            if random.random() < 0.25:
+                picotazos = random.randint(2, 5)
+                for _ in range(picotazos):
+                    renderizar(pos, P_PICOTEAR_ALTO)
+                    time.sleep(0.12)
+                    renderizar(pos, P_PICOTEAR_ABAJO)
+                    time.sleep(0.12)
+                renderizar(pos, P_PICOTEAR_ALTO)
+                time.sleep(0.1)
+
+            # Animación de caminata
+            frame = P_CAMINAR_1 if pos % 2 == 0 else P_CAMINAR_2
+            renderizar(pos, frame)
+            
+            pos += 1
+            time.sleep(0.12)
+
+        # Limpieza final
+        limpiar_pantalla()
+
+    except KeyboardInterrupt:
+        pass
+    finally:
+        mostrar_cursor()
+        print()
+
+if __name__ == "__main__":
+    animar()
