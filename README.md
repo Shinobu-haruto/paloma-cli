@@ -7,7 +7,7 @@ Una paloma en ASCII que camina y picotea por tu terminal sin ninguna razón prá
 ## Instalación
 
 ```bash
-curl -sSL [https://raw.githubusercontent.com/tu-usuario/paloma-cli/main/install.sh](https://raw.githubusercontent.com/tu-usuario/paloma-cli/main/install.sh) | bash
+curl -sSL [https://raw.githubusercontent.com/shinobu-haruto/paloma-cli/main/install.sh](https://raw.githubusercontent.com/shinobu-haruto/paloma-cli/main/install.sh) | bash
 ```
 
 ## Uso
